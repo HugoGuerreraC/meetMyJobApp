@@ -60,7 +60,7 @@ app.post("/api/auth/login", async (req: Request, res: Response) => {
       return res.status(401).json({ error: "Invalid email or password" });
     }
     // Générer le token JWT
-    const token = jwt.sign({ email: user.email }, SECRET_KEY);
+    const token = jwt.sign({ email: user.email, id: user.id }, SECRET_KEY);
     res.json({ token });
   } catch (error) {
     console.error("Error logging in:", error);

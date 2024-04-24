@@ -11,7 +11,9 @@
     "server": "nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm server/index.ts"
   },
   "dependencies": {
+    "@nuxt/ui": "^2.15.2",
     "@prisma/client": "^5.13.0",
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -23,14 +25,20 @@
   },
   "devDependencies": {
     "@nuxt/types": "^2.17.3",
+    "@nuxtjs/tailwindcss": "^6.12.0",
     "@types/bcrypt": "^5.0.2",
     "@types/body-parser": "^1.19.5",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.12.7",
+    "autoprefixer": "^10.4.19",
     "nodemon": "^3.1.0",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vue-tsc": "^1.8.27"
   }
 }
