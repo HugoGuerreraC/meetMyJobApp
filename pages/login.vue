@@ -1,10 +1,8 @@
 <template>
-  <div class="h-full w-full flex justify-center items-center">
-    <div
-      class="flex flex-col items-center border rounded-md gap-2 h-[250px] w-[300px]"
-    >
-      <h1 class="">Login</h1>
-      <form @submit.prevent="login" class="flex justify-center flex-col gap-2">
+  <div>
+    <div>
+      <h1>Login</h1>
+      <form @submit.prevent="login">
         <UInput v-model="email" type="text" placeholder="Email" />
         <UInput v-model="password" type="password" placeholder="Password" />
         <UButton type="submit">Se connecter</UButton>
@@ -26,6 +24,13 @@ export default {
       password: "",
     };
   },
+
+  mounted() {
+    if (localStorage.getItem("token")) {
+      this.$router.push("/admin");
+    }
+  },
+
   methods: {
     async login(e) {
       try {
@@ -34,13 +39,7 @@ export default {
           email: this.email,
           password: this.password,
         });
-
-        if (response.data.token) {
-          localStorage.setItem("token", response.data.token);
-          this.$router.push("/admin");
-        } else {
-          console.log(response.data);
-        }
+        localStorage.setItem("token", response.data.token);
       } catch (err) {
         console.log(err);
       }

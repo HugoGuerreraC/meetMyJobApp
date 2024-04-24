@@ -15,7 +15,7 @@ app.use(
   cors({
     origin: "http://localhost:3000",
     methods: "*",
-    allowedHeaders: ["Content-Type"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -65,6 +65,30 @@ app.post("/api/auth/login", async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ error: "An error occurred while logging in" });
+  }
+});
+
+// get the user connected
+app.get("/api/auth/me", async (req: Request, res: Response) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ error: "No token provided" });
+    }
+    const decoded = jwt.verify(token, SECRET_KEY) as {
+      email: string;
+      id: number;
+    };
+    const user = await prisma.user.findUnique({
+      where: { email: decoded.email },
+    });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error("Error getting user:", error);
+    res.status(500).json({ error: "An error occurred while getting the user" });
   }
 });
 
