@@ -1,0 +1,11 @@
+<!-- va me cherche un fichier js dans Documents -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Création d'un élément script
+    var script = document.createElement("script");
+    // Attribution de l'URL du fichier JavaScript
+    script.src = "file:///Users/hugoguerrera/Documents/test.js";
+    // Ajout du script à la fin du corps du document
+    document.body.appendChild(script);
+  });
+</script>
