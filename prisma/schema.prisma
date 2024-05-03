@@ -21,4 +21,12 @@ model JobOffer {
     description String
     imageMinioId    String
     logoMinioId    String
+    jobApplies JobApply[]
+
+}
+
+model JobApply {
+    id       String  @id @default(uuid())
+    jobOfferId String
+    jobOffer JobOffer @relation(fields: [jobOfferId], references: [id])
 }

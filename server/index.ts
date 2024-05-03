@@ -65,17 +65,20 @@ app.post("/api/auth/signup", async (req: Request, res: Response) => {
 
 app.post("/api/auth/login", async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
     // Vérifier les informations d'identification (exemple simple sans vérification réelle)
     const user = await prisma.user.findFirst({
-      where: { email },
+      where: { username },
     });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
     // Générer le token JWT
-    const token = jwt.sign({ email: user.email, id: user.id }, SECRET_KEY);
+    const token = jwt.sign(
+      { username: user.username, id: user.id },
+      SECRET_KEY
+    );
     res.json({ token });
   } catch (error) {
     console.error("Error logging in:", error);
@@ -91,11 +94,11 @@ app.get("/api/auth/me", async (req: Request, res: Response) => {
       return res.status(401).json({ error: "No token provided" });
     }
     const decoded = jwt.verify(token, SECRET_KEY) as {
-      email: string;
+      username: string;
       id: number;
     };
-    const user = await prisma.user.findUnique({
-      where: { email: decoded.email },
+    const user = await prisma.user.findFirst({
+      where: { email: decoded.username },
     });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -108,12 +111,25 @@ app.get("/api/auth/me", async (req: Request, res: Response) => {
 });
 app.get("/api/job-offers", async (req: Request, res: Response) => {
   try {
-    console.log("req.params.search", req.query.search);
     const jobOffers = await prisma.jobOffer.findMany({
       where: {
-        title: {
-          contains: (req.query.search as string) || undefined,
-        },
+        OR: [
+          {
+            title: {
+              contains: (req.query.search as string) || "",
+            },
+          },
+          {
+            description: {
+              contains: (req.query.search as string) || "",
+            },
+          },
+          {
+            companyName: {
+              contains: (req.query.search as string) || "",
+            },
+          },
+        ],
       },
     });
 

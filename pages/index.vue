@@ -8,10 +8,14 @@
         placeholder="Rechercher une offre"
       />
     </div>
-    <h1 class="inline-block text-2xl font-bold pb-4">
-      Découvrez les offres qui vous correspondent
-      <span class="block mt-[-13px] h-2 bg-[#77e9cb] rounded-full"></span>
-    </h1>
+    <div class="flex items-center justify-between w-full">
+      <h1 class="inline-block text-2xl font-bold pb-4">
+        Découvrez les offres qui vous correspondent
+        <span class="block mt-[-13px] h-2 bg-[#77e9cb] rounded-full"></span>
+      </h1>
+      <ExportSearchData :search="search" />
+    </div>
+
     <div
       v-for="jobOffer in jobOffers"
       :key="jobOffer.id"
@@ -67,6 +71,9 @@ export default {
       this.typingTimer = setTimeout(async () => {
         await this.searchJobOffers();
       }, 300);
+    },
+    async downloadFilter() {
+      console.log("iciii");
     },
     async getJobOffers(e) {
       try {

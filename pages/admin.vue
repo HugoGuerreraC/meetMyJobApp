@@ -19,78 +19,14 @@
 
       <div class="p-4">
         <h1>Job Offers</h1>
-        <Suspense>
-          <div class="w-full flex gap-4">
-            <div
-              v-if="jobOffers.length > 0"
-              v-for="jobOffer in jobOffers"
-              :key="jobOffer.id"
-            >
-              <h2>{{ jobOffer.title }}</h2>
-              <p>{{ jobOffer.description }}</p>
-              <p>{{ jobOffer.companyName }}</p>
 
-              <nuxt-img :src="jobOffer.logoUrl" alt="Logo" />
-
-              <nuxt-img :src="jobOffer.imageUrl" alt="Image" />
-            </div>
-          </div>
-        </Suspense>
+        <UTable
+          class="max-w-screen overflow-scroll"
+          :columns="columns"
+          :rows="jobOffers"
+        />
       </div>
     </div>
-
-    <!-- <div>
-      Create job offer
-      <form @submit.prevent="submitForm">
-        <UInput v-model="formData.title" type="text" placeholder="Title" />
-        <UInput
-          v-model="formData.description"
-          type="text"
-          placeholder="Description"
-        />
-        <UInput
-          v-model="formData.companyName"
-          type="text"
-          placeholder="Company Name"
-        />
-        <input
-          ref="logo"
-          type="file"
-          @change="getFileObject"
-          placeholder="Logo"
-        />
-        <input
-          ref="image"
-          type="file"
-          @change="getFileObject"
-          placeholder="Image"
-        />
-
-        <UButton type="submit">Create</UButton>
-      </form>
-    </div>
-    <div>
-      <h1>Job Offers</h1>
-      <Suspense>
-        <div
-          v-if="jobOffers.length > 0"
-          v-for="jobOffer in jobOffers"
-          :key="jobOffer.id"
-        >
-          <h2>{{ jobOffer.title }}</h2>
-          <p>{{ jobOffer.description }}</p>
-          <p>{{ jobOffer.companyName }}</p>
-
-          <nuxt-img :src="jobOffer.logoUrl" alt="Logo" />
-
-          <nuxt-img :src="jobOffer.imageUrl" alt="Image" />
-        </div>
-      </Suspense>
-    </div>
-    <div>
-      <UButton @click="downloadFile">Download</UButton>
-    </div>
-  </div> -->
   </div>
 </template>
 
@@ -116,6 +52,20 @@ export default {
         type: Array,
         default: () => [],
       },
+      columns: [
+        {
+          label: "Title",
+          key: "title",
+        },
+        {
+          label: "Description",
+          key: "description",
+        },
+        {
+          label: "Company Name",
+          key: "companyName",
+        },
+      ],
     };
   },
   mounted() {
@@ -235,7 +185,6 @@ fetch(apiUrl)
     },
 
     async searchJobOffers(e) {
-      console.log("Search:", this.search);
       const res = await api("/job-offers", "GET", null, {
         search: this.search,
       });
