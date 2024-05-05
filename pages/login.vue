@@ -16,8 +16,6 @@ import { api } from "~/utils/api";
 
 export default {
   name: "login",
-  // create an error state to handle the error
-
   data() {
     return {
       username: "",

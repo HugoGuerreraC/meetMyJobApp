@@ -98,37 +98,6 @@ export default {
       this.isOpen = false;
     },
 
-    uploadLogo(event) {
-      console.log("Event:", event.target.files[0]);
-      // ref logo
-      this.$refs.logo.files = event.target.files;
-    },
-
-    uploadImage(event) {
-      // ref image
-      this.$refs.image.files = event.target.files;
-    },
-
-    async submitForm() {
-      console.log("Form data:", this.$refs.logo);
-      console.log("Form data:", this.$refs.image);
-
-      try {
-        const formData = new FormData();
-        formData.append("title", this.formData.title);
-        formData.append("description", this.formData.description);
-        formData.append("companyName", this.formData.companyName);
-        formData.append("logo", this.$refs.logo.files[0]);
-        formData.append("image", this.$refs.image.files[0]);
-
-        console.log("Form data:", formData);
-        const response = await api("/job-offers", "POST", formData);
-        console.log("New job offer created:", response.data);
-      } catch (error) {
-        console.error("Error creating job offer:", error);
-      }
-    },
-
     async getJobOffers() {
       const res = await api("/job-offers", "GET");
       this.jobOffers = res.data;
@@ -138,7 +107,6 @@ export default {
       const res = await api("/job-offers", "GET", null, {
         search: this.search,
       });
-      console.log("Search results:", res.data);
       this.jobOffers = res.data;
     },
   },

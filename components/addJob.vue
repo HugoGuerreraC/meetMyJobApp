@@ -57,18 +57,17 @@ export default {
       }
 
       try {
-        // await axios.post("http://localhost:3001/api/job-offers", formData, {
-        //   headers: {
-        //     "Content-Type": "multipart/form-data",
-        //   },
-        // });
+        await axios.post("http://localhost:3001/api/job-offers", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
         this.$emit("close-modal");
       } catch (error) {
         console.error(error);
       }
     },
     handleImageChange(event) {
-      console.log(event[0]);
       this.form.image = event[0];
     },
     handleLogoChange(event) {
