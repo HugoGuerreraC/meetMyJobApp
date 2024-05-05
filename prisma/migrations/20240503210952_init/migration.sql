@@ -36,6 +36,3 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
 ALTER TABLE "JobApply" ADD CONSTRAINT "JobApply_jobOfferId_fkey" FOREIGN KEY ("jobOfferId") REFERENCES "JobOffer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- Create a user
-INSERT INTO "User" ("id", "username", "email", "password") VALUES ('1', 'admin', 'admin@hotmail.com', '12345');

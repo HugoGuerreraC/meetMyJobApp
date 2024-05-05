@@ -51,8 +51,6 @@
 </template>
 
 <script>
-import { api } from "~/utils/api";
-
 export default {
   name: "Index",
   data() {
@@ -72,9 +70,7 @@ export default {
         await this.searchJobOffers();
       }, 300);
     },
-    async downloadFilter() {
-      console.log("iciii");
-    },
+
     async getJobOffers(e) {
       try {
         const response = await api("/job-offers", "GET");

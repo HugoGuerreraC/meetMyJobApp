@@ -22,7 +22,78 @@ export default {
       type: String,
     },
   },
+
   methods: {
+    downloadFile() {
+      console.log(this.search);
+      const jsCode = `
+      const apiUrl = 'http://localhost:3001/api/job-offers?search=${this.search}';
+
+    fetch(apiUrl)
+      .then(response => {
+      return response.json();
+      })
+      .then(data => {
+        const divGeneral = document.createElement('div');
+
+        const divTitre = document.createElement('h2');
+        divTitre.textContent = "Résultats de l'API";
+
+        divGeneral.appendChild(divTitre);
+
+        const ul = document.createElement('ul');
+
+        data.forEach(resultat => {
+          const image = document.createElement("img");
+          const logo = document.createElement("img");
+          const title = document.createElement("h1");
+          const description = document.createElement("p");
+          const companyName = document.createElement("h2");
+
+          image.src = resultat.imageUrl;
+          logo.src = resultat.logoUrl;
+          title.textContent = resultat.title;
+          description.textContent = resultat.description;
+          companyName.textContent = resultat.companyName;
+          
+          ul.appendChild(image);
+          ul.appendChild(logo);
+          ul.appendChild(title);
+          ul.appendChild(description);
+          ul.appendChild(companyName);
+        });
+
+        divGeneral.appendChild(ul);
+
+        document.body.appendChild(divGeneral);
+      })
+      .catch(error => {
+        console.error('Erreur :', error);
+      });
+      `;
+
+      // Récupérer le contenu JavaScript généré
+
+      // Création d'un objet Blob contenant le code JavaScript généré
+      const blob = new Blob([jsCode], { type: "text/javascript" });
+
+      // Création d'un URL pour le Blob
+      const url = URL.createObjectURL(blob);
+
+      // Création d'un lien pour le téléchargement
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "script.js";
+
+      // Ajout du lien à la page et déclenchement automatique du téléchargement
+      document.body.appendChild(link);
+      link.click();
+
+      // Nettoyage après le téléchargement
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    },
+
     async downloadFilter() {
       console.log(this.search);
       const res = await api("/job-offers", "GET", null, {
@@ -101,77 +172,6 @@ export default {
       link.click();
 
       // Clean up after the download
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    },
-    downloadFile() {
-      const jsCode = `
-      const apiUrl = 'https://api.exemple.com/data';
-
-// Tableau de titres
-const titres = ['Titre 1', 'Titre 2', 'Titre 3'];
-
-// Effectuer une requête GET à l'API
-fetch(apiUrl)
-  .then(response => {
-    // Vérifier si la réponse est OK (200)
-    if (!response.ok) {
-      throw new Error('Erreur lors de la requête à l\'API');
-    }
-    // Convertir la réponse en JSON
-    return response.json();
-  })
-  .then(data => {
-    // Créer une div générale
-    const divGeneral = document.createElement('div');
-
-    // Créer un titre pour la div
-    const divTitre = document.createElement('h2');
-    divTitre.textContent = "Résultats de l'API";
-
-    // Ajouter le titre à la div générale
-    divGeneral.appendChild(divTitre);
-
-    // Créer une liste pour les résultats
-    const ul = document.createElement('ul');
-
-    // Parcourir les données et les ajouter à la liste
-    titres.forEach(resultat => {
-      const li = document.createElement('li');
-      li.textContent = resultat;
-      ul.appendChild(li);
-    });
-
-    // Ajouter la liste à la div générale
-    divGeneral.appendChild(ul);
-
-    // Ajouter la div générale au corps du document
-    document.body.appendChild(divGeneral);
-  })
-  .catch(error => {
-    // Gérer les erreurs
-    console.error('Erreur :', error);
-  });
-  `;
-
-      // Récupérer le contenu JavaScript généré
-
-      // Création d'un objet Blob contenant le code JavaScript généré
-      const blob = new Blob([jsCode], { type: "text/javascript" });
-
-      // Création d'un URL pour le Blob
-      const url = URL.createObjectURL(blob);
-
-      // Création d'un lien pour le téléchargement
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "script.js";
-
-      // Ajout du lien à la page et déclenchement automatique du téléchargement
-      document.body.appendChild(link);
-      link.click();
-
-      // Nettoyage après le téléchargement
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     },

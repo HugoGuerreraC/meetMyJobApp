@@ -3,7 +3,7 @@
     <div>
       <h1>Login</h1>
       <form @submit.prevent="login">
-        <UInput v-model="email" type="text" placeholder="Email" />
+        <UInput v-model="username" type="text" placeholder="Username" />
         <UInput v-model="password" type="password" placeholder="Password" />
         <UButton type="submit">Se connecter</UButton>
       </form>
@@ -20,7 +20,7 @@ export default {
 
   data() {
     return {
-      email: "",
+      username: "",
       password: "",
     };
   },
@@ -36,7 +36,7 @@ export default {
       try {
         e.preventDefault();
         const response = await api("/auth/login", "POST", {
-          email: this.email,
+          username: this.username,
           password: this.password,
         });
         localStorage.setItem("token", response.data.token);

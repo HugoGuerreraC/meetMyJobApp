@@ -28,7 +28,7 @@ const minioClient = new Minio.Client({
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: "*",
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -74,6 +74,7 @@ app.post("/api/auth/login", async (req: Request, res: Response) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
+
     // Générer le token JWT
     const token = jwt.sign(
       { username: user.username, id: user.id },
@@ -183,6 +184,7 @@ app.post(
   "/api/job-offers",
   upload.fields([{ name: "logo" }, { name: "image" }]),
   async (req: Request, res: Response) => {
+    console.log(req.body);
     try {
       const { title, description, companyName } = req.body;
 

@@ -18,7 +18,23 @@
       </div>
 
       <div class="p-4">
-        <h1>Job Offers</h1>
+        <div class="flex justify-between w-full">
+          <h1>Job Offers</h1>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            @click="isOpen = true"
+          >
+            <path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z" />
+          </svg>
+          <UModal v-model="isOpen" @close-modal="closeModal">
+            <div class="p-4">
+              <AddJob isOpen="isOpen" />
+            </div>
+          </UModal>
+        </div>
 
         <UTable
           class="max-w-screen overflow-scroll"
@@ -43,6 +59,7 @@ export default {
     return {
       user: null,
       search: "",
+      isOpen: false,
       formData: {
         title: "",
         description: "",
@@ -76,76 +93,9 @@ export default {
     }
   },
   methods: {
-    downloadFile() {
-      const jsCode = `
-      const apiUrl = 'https://api.exemple.com/data';
-
-// Tableau de titres
-const titres = ['Titre 1', 'Titre 2', 'Titre 3'];
-
-// Effectuer une requête GET à l'API
-fetch(apiUrl)
-  .then(response => {
-    // Vérifier si la réponse est OK (200)
-    if (!response.ok) {
-      throw new Error('Erreur lors de la requête à l\'API');
-    }
-    // Convertir la réponse en JSON
-    return response.json();
-  })
-  .then(data => {
-    // Créer une div générale
-    const divGeneral = document.createElement('div');
-
-    // Créer un titre pour la div
-    const divTitre = document.createElement('h2');
-    divTitre.textContent = "Résultats de l'API";
-
-    // Ajouter le titre à la div générale
-    divGeneral.appendChild(divTitre);
-
-    // Créer une liste pour les résultats
-    const ul = document.createElement('ul');
-
-    // Parcourir les données et les ajouter à la liste
-    titres.forEach(resultat => {
-      const li = document.createElement('li');
-      li.textContent = resultat;
-      ul.appendChild(li);
-    });
-
-    // Ajouter la liste à la div générale
-    divGeneral.appendChild(ul);
-
-    // Ajouter la div générale au corps du document
-    document.body.appendChild(divGeneral);
-  })
-  .catch(error => {
-    // Gérer les erreurs
-    console.error('Erreur :', error);
-  });
-  `;
-
-      // Récupérer le contenu JavaScript généré
-
-      // Création d'un objet Blob contenant le code JavaScript généré
-      const blob = new Blob([jsCode], { type: "text/javascript" });
-
-      // Création d'un URL pour le Blob
-      const url = URL.createObjectURL(blob);
-
-      // Création d'un lien pour le téléchargement
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "script.js";
-
-      // Ajout du lien à la page et déclenchement automatique du téléchargement
-      document.body.appendChild(link);
-      link.click();
-
-      // Nettoyage après le téléchargement
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+    closeModal() {
+      console.log("Close modal");
+      this.isOpen = false;
     },
 
     uploadLogo(event) {
