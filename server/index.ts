@@ -66,7 +66,7 @@ app.post("/api/auth/signup", async (req: Request, res: Response) => {
 app.post("/api/auth/login", async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
-    // Vérifier les informations d'identification (exemple simple sans vérification réelle)
+
     const user = await prisma.user.findFirst({
       where: { username },
     });
@@ -75,7 +75,6 @@ app.post("/api/auth/login", async (req: Request, res: Response) => {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    // Générer le token JWT
     const token = jwt.sign(
       { username: user.username, id: user.id },
       SECRET_KEY
@@ -87,7 +86,6 @@ app.post("/api/auth/login", async (req: Request, res: Response) => {
   }
 });
 
-// get the user connected
 app.get("/api/auth/me", async (req: Request, res: Response) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
@@ -141,7 +139,6 @@ app.get("/api/job-offers", async (req: Request, res: Response) => {
           getMinioObjectUrl("meetmyjob", jobOffer.imageMinioId),
         ]);
 
-        // Return the job offer with the logo and image
         return {
           ...jobOffer,
           logoUrl: logo,
@@ -160,7 +157,6 @@ app.get("/api/job-offers", async (req: Request, res: Response) => {
 });
 async function getMinioObjectUrl(bucketName: string, objectId: string) {
   return new Promise((resolve, reject) => {
-    // Assuming `minioClient` is already defined
     minioClient.presignedUrl(
       "GET",
       bucketName,
@@ -202,12 +198,8 @@ app.post(
       const logoMinioId = randomUUID();
       const imageMinioId = randomUUID();
 
-      //get the format of the file , example : png , jpeg
       const logoFormat = path.extname(logoFile.originalname).substring(1);
       const imageFormat = path.extname(imageFile.originalname).substring(1);
-
-      console.log("logoFormat", logoFormat);
-      console.log("imageFormat", imageFormat);
 
       await minioClient.putObject(
         "meetmyjob",

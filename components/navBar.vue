@@ -1,10 +1,7 @@
 <template>
   <div class="min-w-[90px] min-h-screen border-r border-primary">
     <div class="flex justify-between flex-col h-full items-center py-2">
-      <div>
-        <!-- <h1>Admin</h1>
-        <p v-if="user">Logged in as: {{ user.email }}</p> -->
-      </div>
+      <div></div>
       <div>
         <UButton @click="logout">Logout</UButton>
       </div>

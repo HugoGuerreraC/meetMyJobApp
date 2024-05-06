@@ -71,24 +71,17 @@ export default {
       });
       `;
 
-      // Récupérer le contenu JavaScript généré
-
-      // Création d'un objet Blob contenant le code JavaScript généré
       const blob = new Blob([jsCode], { type: "text/javascript" });
 
-      // Création d'un URL pour le Blob
       const url = URL.createObjectURL(blob);
 
-      // Création d'un lien pour le téléchargement
       const link = document.createElement("a");
       link.href = url;
       link.download = "script.js";
 
-      // Ajout du lien à la page et déclenchement automatique du téléchargement
       document.body.appendChild(link);
       link.click();
 
-      // Nettoyage après le téléchargement
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     },
